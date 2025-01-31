@@ -10,8 +10,7 @@ Authors@R: c(
            family  = "Xu",
            role    = c("aut", "cre"),
            email   = "ianxu@uchicago.edu"))
-Description: A paragraph providing a full description of the project (on 
-    several lines...)
+Description: This package implements Zhu's (2020) inference in nonparametric/semiparametric moment inequality models with shape restrictions as it pertains to Mogstad, Santos, and Torgovitsky (2018).
 URL: https://github.com/ian-xu-economics/shapeinf
 BugReports: https://github.com/ian-xu-economics/shapeinf/issues
 License: GPL (>= 2)
