@@ -1,13 +1,15 @@
 Package: shapeinf
 Type: Package
-Title: The Title of the Project
-Version: 0.0.0.9000
+Title: Shape Restricted Inference
+Version: 1.0.0
 Authors@R: c(
+    person(given   = "Alexander",
+           family  = "Torgovitsky",
+           role    = c("aut")),
     person(given   = "Ian",
            family  = "Xu",
-           role    = c("aut", "cre", "cph"),
-           email   = "ianxu@uchicago.edu",
-           comment = c(ORCID = "{{orcid}}")))
+           role    = c("aut", "cre"),
+           email   = "ianxu@uchicago.edu"))
 Description: A paragraph providing a full description of the project (on 
     several lines...)
 URL: https://github.com/ian-xu-economics/shapeinf
@@ -15,10 +17,19 @@ BugReports: https://github.com/ian-xu-economics/shapeinf/issues
 License: GPL (>= 2)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 Suggests: 
     knitr,
     rmarkdown,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
-VignetteBuilder: knitr
+Imports:
+    cli,
+    dplyr,
+    gurobi,
+    ivprte,
+    Matrix,
+    pbapply,
+    rlang,
+    stats,
+    tibble

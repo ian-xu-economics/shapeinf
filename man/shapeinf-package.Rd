@@ -2,9 +2,8 @@
 % Please edit documentation in R/shapeinf-package.R
 \docType{package}
 \name{shapeinf-package}
-\alias{shapeinf}
 \alias{shapeinf-package}
-\title{shapeinf: The Title of the Project}
+\title{shapeinf: Shape Restricted Inference}
 \description{
 A paragraph providing a full description of the project (on several lines...)
 }
@@ -17,7 +16,12 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Ian Xu \email{ianxu@uchicago.edu} (\href{https://orcid.org/{{orcid}}}{ORCID}) [copyright holder]
+\strong{Maintainer}: Ian Xu \email{ianxu@uchicago.edu}
+
+Authors:
+\itemize{
+  \item Alexander Torgovitsky
+}
 
 }
 \keyword{internal}
