@@ -77,11 +77,11 @@ head(data)
 #> # A tibble: 6 × 3
 #>       y     d     z
 #>   <dbl> <dbl> <dbl>
-#> 1     0     0     0
-#> 2     1     1     0
-#> 3     1     1     0
-#> 4     1     0     0
-#> 5     1     1     0
+#> 1     0     0     1
+#> 2     0     1     1
+#> 3     0     0     0
+#> 4     0     0     0
+#> 5     1     0     0
 #> 6     0     0     0
 ```
 
@@ -115,9 +115,10 @@ ivprte::compute_population_bounds(target.parameter = "ATT",
 #> ATT -0.05843955   0.4746045
 ```
 
-The true ATT is 0.213. The population bounds with the marginal treatment
-responses (MTRs) specified as sextic Bernstein polynomials are \[-0.058,
-0.475\].
+Suppose our target parameter of interest is the average treatment on the
+treated (ATT). The true ATT is 0.213. The population bounds with the
+marginal treatment responses (MTRs) specified as sextic Bernstein
+polynomials are \[-0.058, 0.475\].
 
 # Compute the Confidence Interval Using Zhu’s Shape-Restricted Test
 
@@ -155,7 +156,7 @@ shapeinf.example
 #> 
 #> Target Parameter: Average Treatment on the Treated (ATT)
 #> 
-#> 90% Confidence Interval: (-0.1087, 0.5375)
+#> 90% Confidence Interval: (-0.1161, 0.5295)
 ```
 
 Two items should be of note regarding the confidence intervals outputted
@@ -183,10 +184,10 @@ the following target parameters:
 
 - Average untreated outcome (“AUO”)
 - Average treated outcome (“ATO”)
-- Average Treatment Effect (“ATE”)
-- Average Treatment on the Treated (“ATT”)
-- Average Treatment on the Untreated (“ATU”)
-- Local Average Treatment Effect (“LATE”)
+- Average treatment effect (“ATE”)
+- Average treatment on the treated (“ATT”)
+- Average treatment on the untreated (“ATU”)
+- Local average treatment effect (“LATE”)
 
 To do this, simply change the target parameter. If the target.parameter
 is “LATE”, we’ll also need to input the lower and upper bounds into
@@ -211,7 +212,7 @@ summary(shapeinf.example,
 #> 
 #> Target Parameter: Average Treatment on the Treated (ATT)
 #> 
-#> 95% Confidence Interval: (-0.1217, 0.5476)
+#> 95% Confidence Interval: (-0.1276, 0.541)
 ```
 
 ## Detailed Information
@@ -224,12 +225,12 @@ head(shapeinf.example$beta.null.test.detailed)
 #> # A tibble: 6 × 4
 #>   beta.null test.stat gurobi.result     p.value
 #>       <dbl>     <dbl> <list>              <dbl>
-#> 1     -0.3   1155551. <named list [12]>       0
-#> 2     -0.29   956824. <named list [12]>       0
-#> 3     -0.28   794101. <named list [12]>       0
-#> 4     -0.27   667383. <named list [12]>       0
-#> 5     -0.26   576670. <named list [12]>       0
-#> 6     -0.25   514019. <named list [12]>       0
+#> 1     -0.3   1126969. <named list [12]>       0
+#> 2     -0.29   941090. <named list [12]>       0
+#> 3     -0.28   790956. <named list [12]>       0
+#> 4     -0.27   676567. <named list [12]>       0
+#> 5     -0.26   597249. <named list [12]>       0
+#> 6     -0.25   531816. <named list [12]>       0
 ```
 
 We can plot a the $p$-value curve using `ggplot2::ggplot()`:
@@ -263,12 +264,12 @@ head(shapeinf.example$bootstrap.detailed)
 #> # A tibble: 6 × 7
 #>   bootstrap.number bootstrap.seed beta.null gamma lambda bootstrap.test.stat
 #>              <int>          <int>     <dbl> <dbl>  <dbl>               <dbl>
-#> 1                1              1     -0.3  0.330     0              127345.
-#> 2                1              1     -0.3  0      1086.               7827.
-#> 3                1              1     -0.29 0.330     0              102578.
-#> 4                1              1     -0.29 0      1086.               7500.
-#> 5                1              1     -0.28 0.330     0               82038.
-#> 6                1              1     -0.28 0      1086.               7263.
+#> 1                1              1     -0.3  0.330     0              108172.
+#> 2                1              1     -0.3  0      1086.              51156.
+#> 3                1              1     -0.29 0.330     0               91352.
+#> 4                1              1     -0.29 0      1086.              49792.
+#> 5                1              1     -0.28 0.330     0               77337.
+#> 6                1              1     -0.28 0      1086.              48494.
 #> # ℹ 1 more variable: gurobi.result <list>
 ```
 
@@ -303,18 +304,18 @@ shapeinf.example.dgp <- shapeinf(data,
 data.frame(estimated.tau = shapeinf.example$tau,
            population.tau = shapeinf.example.dgp$tau)
 #>    estimated.tau population.tau
-#> 1    -0.27365038    -0.27391814
-#> 2    -0.23905971    -0.23811314
-#> 3    -0.19055948    -0.18916214
-#> 4    -0.14335181    -0.14285714
-#> 5    -0.09572068    -0.09655214
-#> 6    -0.04638872    -0.04760114
-#> 7    -0.01126922    -0.01179614
-#> 8     0.27365038     0.27391814
-#> 9     0.23905971     0.23811314
-#> 10    0.19055948     0.18916214
-#> 11    0.14335181     0.14285714
-#> 12    0.09572068     0.09655214
-#> 13    0.04638872     0.04760114
-#> 14    0.01126922     0.01179614
+#> 1    -0.27132669    -0.27391814
+#> 2    -0.23713776    -0.23811314
+#> 3    -0.18921028    -0.18916214
+#> 4    -0.14335597    -0.14285714
+#> 5    -0.09767616    -0.09655214
+#> 6    -0.04891361    -0.04760114
+#> 7    -0.01237952    -0.01179614
+#> 8     0.27132669     0.27391814
+#> 9     0.23713776     0.23811314
+#> 10    0.18921028     0.18916214
+#> 11    0.14335597     0.14285714
+#> 12    0.09767616     0.09655214
+#> 13    0.04891361     0.04760114
+#> 14    0.01237952     0.01179614
 ```

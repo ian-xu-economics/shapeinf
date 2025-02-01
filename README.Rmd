@@ -105,7 +105,7 @@ ivprte::compute_population_bounds(target.parameter = "ATT",
                                   assumptions = "extra",
                                   assumptions.extra = assumptions.extra)
 ```
-The true ATT is 0.213. The population bounds with the marginal treatment responses (MTRs) specified as sextic Bernstein polynomials are [-0.058, 0.475].
+Suppose our target parameter of interest is the average treatment on the treated (ATT). The true ATT is 0.213. The population bounds with the marginal treatment responses (MTRs) specified as sextic Bernstein polynomials are [-0.058, 0.475].
 
 # Compute the Confidence Interval Using Zhu's Shape-Restricted Test
 
@@ -139,10 +139,10 @@ We can compute the true, population bounds, and confidence intervals for the fol
 
 * Average untreated outcome ("AUO")
 * Average treated outcome ("ATO")
-* Average Treatment Effect ("ATE")
-* Average Treatment on the Treated ("ATT")
-* Average Treatment on the Untreated ("ATU")
-* Local Average Treatment Effect ("LATE")
+* Average treatment effect ("ATE")
+* Average treatment on the treated ("ATT")
+* Average treatment on the untreated ("ATU")
+* Local average treatment effect ("LATE")
 
 To do this, simply change the target parameter. If the target.parameter is "LATE", we'll also need to input the lower and upper bounds into `late.lb` and `late.ub` parameters respectively.
 
