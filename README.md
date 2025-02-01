@@ -1,8 +1,5 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
-=========================================================
-
 <!-- badges: start -->
 
 ![status](https://img.shields.io/badge/status-under%20construction-yellow)
@@ -12,7 +9,7 @@
 
 The `shapeinf` package is hosted on GitHub at
 <https://github.com/ian-xu-economics/shapeinf/>. It can be installed
-using the remotes::install_github() function:
+using the `remotes::install_github()` function:
 
 ``` r
 # install.packages("remotes")
@@ -78,11 +75,11 @@ head(data)
 #>       y     d     z
 #>   <dbl> <dbl> <dbl>
 #> 1     0     0     1
-#> 2     0     1     1
-#> 3     0     0     0
+#> 2     1     1     1
+#> 3     1     1     0
 #> 4     0     0     0
-#> 5     1     0     0
-#> 6     0     0     0
+#> 5     0     1     1
+#> 6     1     1     1
 ```
 
 ## Compute First Order Conditions and Declare MTRS
@@ -156,7 +153,7 @@ shapeinf.example
 #> 
 #> Target Parameter: Average Treatment on the Treated (ATT)
 #> 
-#> 90% Confidence Interval: (-0.1161, 0.5295)
+#> 90% Confidence Interval: (-0.1194, 0.5116)
 ```
 
 Two items should be of note regarding the confidence intervals outputted
@@ -212,7 +209,7 @@ summary(shapeinf.example,
 #> 
 #> Target Parameter: Average Treatment on the Treated (ATT)
 #> 
-#> 95% Confidence Interval: (-0.1276, 0.541)
+#> 95% Confidence Interval: (-0.1303, 0.5195)
 ```
 
 ## Detailed Information
@@ -225,12 +222,12 @@ head(shapeinf.example$beta.null.test.detailed)
 #> # A tibble: 6 × 4
 #>   beta.null test.stat gurobi.result     p.value
 #>       <dbl>     <dbl> <list>              <dbl>
-#> 1     -0.3   1126969. <named list [12]>       0
-#> 2     -0.29   941090. <named list [12]>       0
-#> 3     -0.28   790956. <named list [12]>       0
-#> 4     -0.27   676567. <named list [12]>       0
-#> 5     -0.26   597249. <named list [12]>       0
-#> 6     -0.25   531816. <named list [12]>       0
+#> 1     -0.3   1019025. <named list [12]>       0
+#> 2     -0.29   843419. <named list [12]>       0
+#> 3     -0.28   703403. <named list [12]>       0
+#> 4     -0.27   598979. <named list [12]>       0
+#> 5     -0.26   528205. <named list [12]>       0
+#> 6     -0.25   467866. <named list [12]>       0
 ```
 
 We can plot a the $p$-value curve using `ggplot2::ggplot()`:
@@ -264,12 +261,12 @@ head(shapeinf.example$bootstrap.detailed)
 #> # A tibble: 6 × 7
 #>   bootstrap.number bootstrap.seed beta.null gamma lambda bootstrap.test.stat
 #>              <int>          <int>     <dbl> <dbl>  <dbl>               <dbl>
-#> 1                1              1     -0.3  0.330     0              108172.
-#> 2                1              1     -0.3  0      1086.              51156.
-#> 3                1              1     -0.29 0.330     0               91352.
-#> 4                1              1     -0.29 0      1086.              49792.
-#> 5                1              1     -0.28 0.330     0               77337.
-#> 6                1              1     -0.28 0      1086.              48494.
+#> 1                1              1     -0.3  0.330     0               64042.
+#> 2                1              1     -0.3  0      1086.              10532.
+#> 3                1              1     -0.29 0.330     0               47987.
+#> 4                1              1     -0.29 0      1086.              10422.
+#> 5                1              1     -0.28 0.330     0               35611.
+#> 6                1              1     -0.28 0      1086.              10325.
 #> # ℹ 1 more variable: gurobi.result <list>
 ```
 
@@ -304,18 +301,18 @@ shapeinf.example.dgp <- shapeinf(data,
 data.frame(estimated.tau = shapeinf.example$tau,
            population.tau = shapeinf.example.dgp$tau)
 #>    estimated.tau population.tau
-#> 1    -0.27132669    -0.27391814
-#> 2    -0.23713776    -0.23811314
-#> 3    -0.18921028    -0.18916214
-#> 4    -0.14335597    -0.14285714
-#> 5    -0.09767616    -0.09655214
-#> 6    -0.04891361    -0.04760114
-#> 7    -0.01237952    -0.01179614
-#> 8     0.27132669     0.27391814
-#> 9     0.23713776     0.23811314
-#> 10    0.18921028     0.18916214
-#> 11    0.14335597     0.14285714
-#> 12    0.09767616     0.09655214
-#> 13    0.04891361     0.04760114
-#> 14    0.01237952     0.01179614
+#> 1    -0.27243896    -0.27391814
+#> 2    -0.23715646    -0.23811314
+#> 3    -0.18911315    -0.18916214
+#> 4    -0.14358209    -0.14285714
+#> 5    -0.09749277    -0.09655214
+#> 6    -0.04822974    -0.04760114
+#> 7    -0.01198683    -0.01179614
+#> 8     0.27243896     0.27391814
+#> 9     0.23715646     0.23811314
+#> 10    0.18911315     0.18916214
+#> 11    0.14358209     0.14285714
+#> 12    0.09749277     0.09655214
+#> 13    0.04822974     0.04760114
+#> 14    0.01198683     0.01179614
 ```

@@ -13,15 +13,13 @@ knitr::opts_chunk$set(collapse  = TRUE,
                       out.width = "100%")
 ```
 
-=========================================================
-
 <!-- badges: start -->
 ![status](https://img.shields.io/badge/status-under%20construction-yellow)
 <!-- badges: end -->
 
 ## Installation
 
-The `shapeinf` package is hosted on GitHub at https://github.com/ian-xu-economics/shapeinf/. It can be installed using the remotes::install_github() function:
+The `shapeinf` package is hosted on GitHub at https://github.com/ian-xu-economics/shapeinf/. It can be installed using the `remotes::install_github()` function:
 ``` r
 # install.packages("remotes")
 remotes::install_github("ian-xu-economics/shapeinf)
