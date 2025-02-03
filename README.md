@@ -20,7 +20,10 @@ remotes::install_github("ian-xu-economics/shapeinf)
 
 After installing `shapeinf`, we can attach the package to our session
 using the base `library()` function. We’ll need `ivprte` and `tidyverse`
-for this documentation as well.
+for this documentation as well. `ivprte` is a package used to replicate
+Mogstad, Torgovitsky, and Santos (2018). Like `shapeinf`, it is hosted
+on Github and can be installed using
+`remotes::install_github("ian-xu-economics/ivprte)`.
 
 ``` r
 library(shapeinf)
@@ -75,11 +78,11 @@ head(data)
 #>       y     d     z
 #>   <dbl> <dbl> <dbl>
 #> 1     0     0     1
-#> 2     1     1     1
-#> 3     1     1     0
+#> 2     1     1     0
+#> 3     0     0     0
 #> 4     0     0     0
-#> 5     0     1     1
-#> 6     1     1     1
+#> 5     1     0     1
+#> 6     0     0     0
 ```
 
 ## Compute First Order Conditions and Declare MTRS
@@ -153,19 +156,19 @@ shapeinf.example
 #> 
 #> Target Parameter: Average Treatment on the Treated (ATT)
 #> 
-#> 90% Confidence Interval: (-0.1194, 0.5116)
+#> 90% Confidence Interval: (-0.1221, 0.5275)
 ```
 
 Two items should be of note regarding the confidence intervals outputted
 by `shapeinf`:
 
 1.  To tighten the bounds of the confidence intervals, linear
-    interpolation is used. Suppose we our level of significance
-    $\alpha = 0.1$. We test $\beta_0 = 1$ and $\beta_0 = 1.1$ using
-    `shapeinf` and the respective p-values are $0.12$ and $0.08$
-    respectively. We can draw a line between these two points, and
-    estimate that the upper bound is $1.05$ because the estimated
-    $p$-value at this $\beta_0$ is $0.1$.
+    interpolation is used. Suppose our level of significance $\alpha$ is
+    $0.1$. We test $\beta_0 = 1$ and $\beta_0 = 1.1$ using `shapeinf`
+    and the respective p-values are $0.12$ and $0.08$ respectively. We
+    can draw a line between these two points, and estimate that the
+    upper bound is $1.05$ because the estimated $p$-value at this
+    $\beta_0$ is $0.1$.
 
 2.  For some data generating processes, the $p$-value function can be
     multimodal; the $p$-value can increase as $\beta_0$ deviates further
@@ -176,8 +179,8 @@ by `shapeinf`:
 
 ## Supported Target Parameters
 
-We can compute the true, population bounds, and confidence intervals for
-the following target parameters:
+We can compute the true value, population bounds, and confidence
+intervals for the following target parameters:
 
 - Average untreated outcome (“AUO”)
 - Average treated outcome (“ATO”)
@@ -209,7 +212,7 @@ summary(shapeinf.example,
 #> 
 #> Target Parameter: Average Treatment on the Treated (ATT)
 #> 
-#> 95% Confidence Interval: (-0.1303, 0.5195)
+#> 95% Confidence Interval: (-0.1314, 0.5391)
 ```
 
 ## Detailed Information
@@ -222,12 +225,12 @@ head(shapeinf.example$beta.null.test.detailed)
 #> # A tibble: 6 × 4
 #>   beta.null test.stat gurobi.result     p.value
 #>       <dbl>     <dbl> <list>              <dbl>
-#> 1     -0.3   1019025. <named list [12]>       0
-#> 2     -0.29   843419. <named list [12]>       0
-#> 3     -0.28   703403. <named list [12]>       0
-#> 4     -0.27   598979. <named list [12]>       0
-#> 5     -0.26   528205. <named list [12]>       0
-#> 6     -0.25   467866. <named list [12]>       0
+#> 1     -0.3   1170165. <named list [12]>       0
+#> 2     -0.29   964164. <named list [12]>       0
+#> 3     -0.28   793804. <named list [12]>       0
+#> 4     -0.27   659086. <named list [12]>       0
+#> 5     -0.26   560009. <named list [12]>       0
+#> 6     -0.25   492901. <named list [12]>       0
 ```
 
 We can plot a the $p$-value curve using `ggplot2::ggplot()`:
@@ -261,12 +264,12 @@ head(shapeinf.example$bootstrap.detailed)
 #> # A tibble: 6 × 7
 #>   bootstrap.number bootstrap.seed beta.null gamma lambda bootstrap.test.stat
 #>              <int>          <int>     <dbl> <dbl>  <dbl>               <dbl>
-#> 1                1              1     -0.3  0.330     0               64042.
-#> 2                1              1     -0.3  0      1086.              10532.
-#> 3                1              1     -0.29 0.330     0               47987.
-#> 4                1              1     -0.29 0      1086.              10422.
-#> 5                1              1     -0.28 0.330     0               35611.
-#> 6                1              1     -0.28 0      1086.              10325.
+#> 1                1              1     -0.3  0.330     0              131208.
+#> 2                1              1     -0.3  0      1086.               8907.
+#> 3                1              1     -0.29 0.330     0              104646.
+#> 4                1              1     -0.29 0      1086.               8114.
+#> 5                1              1     -0.28 0.330     0               83806.
+#> 6                1              1     -0.28 0      1086.               7391.
 #> # ℹ 1 more variable: gurobi.result <list>
 ```
 
@@ -301,18 +304,18 @@ shapeinf.example.dgp <- shapeinf(data,
 data.frame(estimated.tau = shapeinf.example$tau,
            population.tau = shapeinf.example.dgp$tau)
 #>    estimated.tau population.tau
-#> 1    -0.27243896    -0.27391814
-#> 2    -0.23715646    -0.23811314
-#> 3    -0.18911315    -0.18916214
-#> 4    -0.14358209    -0.14285714
-#> 5    -0.09749277    -0.09655214
-#> 6    -0.04822974    -0.04760114
-#> 7    -0.01198683    -0.01179614
-#> 8     0.27243896     0.27391814
-#> 9     0.23715646     0.23811314
-#> 10    0.18911315     0.18916214
-#> 11    0.14358209     0.14285714
-#> 12    0.09749277     0.09655214
-#> 13    0.04822974     0.04760114
-#> 14    0.01198683     0.01179614
+#> 1    -0.27415111    -0.27391814
+#> 2    -0.23898812    -0.23811314
+#> 3    -0.18953977    -0.18916214
+#> 4    -0.14225618    -0.14285714
+#> 5    -0.09583430    -0.09655214
+#> 6    -0.04739705    -0.04760114
+#> 7    -0.01183346    -0.01179614
+#> 8     0.27415111     0.27391814
+#> 9     0.23898812     0.23811314
+#> 10    0.18953977     0.18916214
+#> 11    0.14225618     0.14285714
+#> 12    0.09583430     0.09655214
+#> 13    0.04739705     0.04760114
+#> 14    0.01183346     0.01179614
 ```

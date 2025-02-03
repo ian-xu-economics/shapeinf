@@ -1,10 +1,13 @@
 ---
-output: github_document
-editor_options: 
+output:
+  html_document:
+    df_print: paged
+editor_options:
   chunk_output_type: console
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(collapse  = TRUE,
@@ -13,27 +16,40 @@ knitr::opts_chunk$set(collapse  = TRUE,
                       out.width = "100%")
 ```
 
+
+=========================================================
+
 <!-- badges: start -->
 ![status](https://img.shields.io/badge/status-under%20construction-yellow)
 <!-- badges: end -->
 
+## Introduction
+
+
 ## Installation
 
-The `shapeinf` package is hosted on GitHub at https://github.com/ian-xu-economics/shapeinf/. It can be installed using the `remotes::install_github()` function:
+The `shapeinf` package is hosted on GitHub at https://github.com/ian-xu-economics/shapeinf/. It can be installed using the remotes::install_github() function:
 ``` r
 # install.packages("remotes")
 remotes::install_github("ian-xu-economics/shapeinf)
 ```
 
+## Attribution
+
+To cite the `shapeinf` package in publications, use the `citation()` function, which provides both the text version and the BibTeX entry for referencing:
+``` r
+citation("shapeinf")
+```
+
 ## Using `shapeinf`
 
-After installing `shapeinf`, we can attach the package to our session using the base `library()` function. We'll need `ivprte` and `tidyverse` for this documentation as well. `ivprte` is a package used to replicate Mogstad, Torgovitsky, and Santos (2018). Like `shapeinf`, it is hosted on Github and can be installed using `remotes::install_github("ian-xu-economics/ivprte)`.
+After installing `shapeinf`, we can attach the package to our session using the base `library()` function. We'll need `ivprte`.
 ``` r 
 library(shapeinf)
 library(ivprte)
 library(tidyverse)
 ```
-```{r, echo = FALSE, message=FALSE, warning=FALSE}
+```{r, echo = FALSE}
 devtools::load_all()
 library(ivprte)
 library(tidyverse)
@@ -75,7 +91,7 @@ Now that we have the DGP coded into R, we'll draw 10,000 observations. Generally
 ```{r}
 sample.size <- 10000
 
-data <- simulate_data(dgp.in, sample.size)
+data <- simulate.data(dgp.in, sample.size)
 
 head(data)
 ```
@@ -103,7 +119,7 @@ ivprte::compute_population_bounds(target.parameter = "ATT",
                                   assumptions = "extra",
                                   assumptions.extra = assumptions.extra)
 ```
-Suppose our target parameter of interest is the average treatment on the treated (ATT). The true ATT is 0.213. The population bounds with the marginal treatment responses (MTRs) specified as sextic Bernstein polynomials are [-0.058, 0.475].
+The true ATT is 0.213. The population bounds with the marginal treatment responses (MTRs) specified as sextic Bernstein polynomials are [-0.058, 0.475].
 
 # Compute the Confidence Interval Using Zhu's Shape-Restricted Test
 
@@ -118,8 +134,7 @@ shapeinf.example <- shapeinf(data,
                              beta.null = seq(-0.3, 0.7, 0.01),
                              number.bootstraps = 500,
                              bootstrap.seeds = 1:500,
-                             parallel = TRUE,
-                             return.gurobi = TRUE)
+                             parallel = TRUE)
 ```
 ```{r}
 shapeinf.example
@@ -127,20 +142,20 @@ shapeinf.example
 
 Two items should be of note regarding the confidence intervals outputted by `shapeinf`:
 
-1. To tighten the bounds of the confidence intervals, linear interpolation is used. Suppose our level of significance $\alpha$ is $0.1$. We test $\beta_0 = 1$ and $\beta_0 = 1.1$ using `shapeinf` and the respective p-values are $0.12$ and $0.08$ respectively. We can draw a line between these two points, and estimate that the upper bound is $1.05$ because the estimated $p$-value at this $\beta_0$ is $0.1$. 
+1. To tighten the bounds of the confidence intervals, linear interpolation is used. Suppose we our level of significance $\alpha = 0.1$. We test $\beta_0 = 1$ and $\beta_0 = 1.1$ using `shapeinf` and the respective p-values are $0.12$ and $0.08$ respectively. We can draw a line between these two points, and estimate that the upper bound is $1.05$ because the estimated $p$-value at this $\beta_0$ is $0.1$. 
 
-2. For some data generating processes, the $p$-value function can be multimodal; the $p$-value can increase as $\beta_0$ deviates further from the truth. Therefore, it is imperative to test a broad range of $\beta_0$ values. In these cases, the outputted confidence interval will be conservative as it will include values for which the Zhu's test rejected.
+2. For some data generating processes, the $p$-value function can be multimodal; the $p$-value can increase as $\beta_0$ deviates further from the truth. Therefore, it is imperative to test a broad range of $\beta_0$ values.
 
 ## Supported Target Parameters
 
-We can compute the true value, population bounds, and confidence intervals for the following target parameters:
+We can compute the true, population bounds, and confidence intervals for the following target parameters:
 
 * Average untreated outcome ("AUO")
 * Average treated outcome ("ATO")
-* Average treatment effect ("ATE")
-* Average treatment on the treated ("ATT")
-* Average treatment on the untreated ("ATU")
-* Local average treatment effect ("LATE")
+* Average Treatment Effect ("ATE")
+* Average Treatment on the Treated ("ATT")
+* Average Treatment on the Untreated ("ATU")
+* Local Average Treatment Effect ("LATE")
 
 To do this, simply change the target parameter. If the target.parameter is "LATE", we'll also need to input the lower and upper bounds into `late.lb` and `late.ub` parameters respectively.
 
@@ -161,8 +176,8 @@ head(shapeinf.example$beta.null.test.detailed)
 ```
 
 We can plot a the $p$-value curve using `ggplot2::ggplot()`:
-```{r, dpi = 150}
-ggplot(shapeinf.example$beta.null.test.detailed, 
+```{r}
+ggplot2::ggplot(shapeinf.example$beta.null.test.detailed, 
        aes(x = beta.null, y = p.value)) + 
   geom_line() + 
   geom_point() + 
@@ -182,24 +197,4 @@ Some additional detailed data that may be of interest are the test statistics an
 head(shapeinf.example$bootstrap.detailed)
 ```
 
-If the user wants to see the results from `gurobi::gurobi()`, they can set the `return.gurobi` parameter to `TRUE` when running `shapeinf()`. The detailed `gurobi()` results for each test statistic and bootstrap test statistic are stored as a column in `beta.null.test.detailed` and `bootstrap.detailed`.
-
-## Using Population $\tau$
-
-One can also include the DGP into `shapeinf()`. If the DGP is included, `shapeinf()` will automatically compute the population $\tau$—rather than the estimated $\tau$—and use that to compute the test statistics and bootstrap test statistics.
-
-```{r}
-shapeinf.example.dgp <- shapeinf(data,
-                                 target.parameter = "ATT",
-                                 alpha = 0.1,
-                                 bases = bases.in,
-                                 beta.null = seq(-0.3, 0.7, 0.01),
-                                 number.bootstraps = 500,
-                                 bootstrap.seeds = 1:500,
-                                 parallel = TRUE,
-                                 return.gurobi = TRUE,
-                                 dgp.in = dgp.in)
-
-data.frame(estimated.tau = shapeinf.example$tau,
-           population.tau = shapeinf.example.dgp$tau)
-```
+If the user wants to see the results from `gurobi::gurobi()`, they can set the `return.gurobi` parameter to `TRUE` when running `shapeinf()`. The detailed ``gurobi()` results for each test statistic and bootstrap test statistic are stored as a column in `beta.null.test.detailed` and `bootstrap.detailed`.
